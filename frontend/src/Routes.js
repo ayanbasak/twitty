@@ -6,11 +6,15 @@ import Dashboard from "./Views/Dashboard";
 import SignUp from "./Views/SignUp";
 import Layout from "./Components/Layout/Layout";
 import Logout from "./Views/Logout";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Home from "./Components/Home/Home";
 import Explore from "./Components/Explore/Explore";
-import ProfilePage from "./Components/Profile/ProfilePage";
+import ProfilePage from "./Components/Profile/ProfilePage"; // "../../redux/actions/authentication.action";
 import Notifications from "./Components/Notifications/Notifications";
+import { getAuthenticationDetails } from "./redux/actions/authentication.action";
+import { UpdateProfile } from "./Components/Profile/UpdateProfile/UpdateProfile";
+import { Comment } from "./Components/Comment/Comment";
+
 // PrivateRoutes
 const PrivateRoutes = () => {
   return (
@@ -23,6 +27,8 @@ const PrivateRoutes = () => {
         <Route path="/bookmark" element={<h1>bookmark Page </h1>} />
         <Route path="/lists" element={<h1>lists Page </h1>} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/updateprofile" element={<UpdateProfile />} />
+        <Route path="/comment/:commentId" element={<Comment />} />
         <Route path="/logout" element={<Logout />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
@@ -45,9 +51,14 @@ const OpenRoutes = () => {
 };
 
 export const Routes = () => {
-  const isAuthenticated = useSelector((state) => state.isAuthenticated.isAuthenticated);
+  // const dispatch = useDispatch();
+  const authorization = useSelector((state) => state.authorization);
+  // console.log("--- Routes authorization ----- " + JSON.stringify(authorization));
 
-  if (!isAuthenticated) {
+  // let authData = dispatch(getAuthenticationDetails());
+  // console.log("--- Routes authData ----- " + JSON.stringify(authData));
+
+  if (!authorization.isAuthenticated) {
     return <OpenRoutes />;
   } else {
     return <PrivateRoutes />;

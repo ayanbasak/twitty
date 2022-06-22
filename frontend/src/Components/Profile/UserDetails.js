@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Section,
   CoverImage,
@@ -16,39 +16,46 @@ import {
   FollowNo,
   FollowText,
 } from "./UserDetails.styles";
+import { NavLink } from "react-router-dom";
 import profile_pic from "../Home/profile_pic.JPG";
 import statusImage from "../Home/statusImage.jpg";
+import { useUserDetails } from "./useUserDetails";
+import { Loader } from "../Loader/Loader";
 
 const UserDetails = () => {
-  return (
-    <Section>
-      <CoverImage src={statusImage} />
-      <BottomSection>
-        <ProfileImage src={profile_pic} />
-        <EditButton>Edit profile</EditButton>
-      </BottomSection>
-      <DetailsSection>
-        <UserName>Ayan Basak</UserName>
-        <UserId>@AyanBasak985157</UserId>
-        <UserDescription>
-          Hi, I am a full stack software developer from india, I am very much
-          passionate on programming, want's to more friends and communities to
-          grow skills together.
-        </UserDescription>
-        <JoinSection>
-          <DateIcon />
-          <JoiningDate>Joined September 2021</JoiningDate>
-        </JoinSection>
-        <FollowSection>
-          <FollowNo>28</FollowNo>
-          <FollowText>Following</FollowText>
+  const [userDetails, loading] = useUserDetails();
 
-          <FollowNo>2</FollowNo>
-          <FollowText> Followers</FollowText>
-        </FollowSection>
-      </DetailsSection>
-    </Section>
-  );
+  if(loading){
+    return <Loader size="30px"/>
+  }else{
+    return (
+      <Section>
+        <CoverImage src={userDetails.coverPhoto} />
+        <BottomSection>
+          <ProfileImage src={userDetails.profilePic} />
+          <NavLink to="/updateprofile">
+            <EditButton>Edit profile</EditButton>
+          </NavLink>
+        </BottomSection>
+        <DetailsSection>
+          <UserName>{userDetails.userName}</UserName>
+          <UserId>{userDetails.userTag}</UserId>
+          <UserDescription>{userDetails.bio}</UserDescription>
+          <JoinSection>
+            <DateIcon />
+            <JoiningDate>Joined {userDetails.joiningDate}</JoiningDate>
+          </JoinSection>
+          <FollowSection>
+            <FollowNo>{userDetails.following}</FollowNo>
+            <FollowText>Following</FollowText>
+  
+            <FollowNo>{userDetails.followedBy}</FollowNo>
+            <FollowText> Followers</FollowText>
+          </FollowSection>
+        </DetailsSection>
+      </Section>
+    );
+  }  
 };
 
 export default UserDetails;

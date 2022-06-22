@@ -27,8 +27,13 @@ import {
   TopicRightPart,
 } from "./ProfilePage.styles";
 import { Divider } from "../Home/GroupPost.styles";
+import { useNews } from "../Home/useNews";
+import { useUsersList } from "../Home/useUsersList";
 
 const ProfilePage = () => {
+  const [news, newsLoading] = useNews({limit:0, offset:7});
+  const [users, userListLoading] = useUsersList({limit:0, offset:7});
+  
   return (
     <Section>
       <MiddleSection>
@@ -38,54 +43,23 @@ const ProfilePage = () => {
         {/*   Follow Section   */}
         <SectionHeader>Who to follow</SectionHeader>
 
-        <NewsSection>
-          <ImageSection>
-            <ProfileImage src={statusImg} />
-          </ImageSection>
-          <PageData>
-            <PageDetails>
-              <PageName>CodeChef</PageName>
-              <PageId>@codechef</PageId>
-            </PageDetails>
-            <ButtonSection>
-              <FollowButton>Follow</FollowButton>
-            </ButtonSection>
-            <PageDescription>CodeChef was created to challenge and engage the developer community and provide a platform for practice, competition, and improvement.</PageDescription>
-          </PageData>
-        </NewsSection>
-
-        <NewsSection>
-          <ImageSection>
-            <ProfileImage src={statusImg} />
-          </ImageSection>
-          <PageData>
-            <PageDetails>
-              <PageName>CodeChef</PageName>
-              <PageId>@codechef</PageId>
-            </PageDetails>
-            <ButtonSection>
-              <FollowButton>Follow</FollowButton>
-            </ButtonSection>
-            <PageDescription>CodeChef was created to challenge and engage the developer community and provide a platform for practice, competition, and improvement.</PageDescription>
-          </PageData>
-        </NewsSection>
-
-        <NewsSection>
-          <ImageSection>
-            <ProfileImage src={statusImg} />
-          </ImageSection>
-          <PageData>
-            <PageDetails>
-              <PageName>CodeChef</PageName>
-              <PageId>@codechef</PageId>
-            </PageDetails>
-            <ButtonSection>
-              <FollowButton>Follow</FollowButton>
-            </ButtonSection>
-            <PageDescription>CodeChef was created to challenge and engage the developer community and provide a platform for practice, competition, and improvement.</PageDescription>
-          </PageData>
-        </NewsSection>
-
+        {users.map((user,i)=>(
+          <NewsSection key={i}>
+            <ImageSection>
+              <ProfileImage src={user.profilePic} />
+            </ImageSection>
+            <PageData>
+              <PageDetails>
+                <PageName>{user.userName}</PageName>
+                <PageId>{user.userTag}</PageId>
+              </PageDetails>
+              <ButtonSection>
+                <FollowButton>Follow</FollowButton>
+              </ButtonSection>
+              <PageDescription>{user.bio}</PageDescription>
+            </PageData>
+          </NewsSection>
+        ))}       
         <SectionBottom>See more</SectionBottom>
         {/*   End of Follow Section   */}
 
@@ -148,8 +122,8 @@ const ProfilePage = () => {
       </MiddleSection>
       <RightSection>
         <SearchBox />
-        <ExplorePages headerText="You might like" />
-        <ExploreNews />
+        <ExplorePages headerText="You might like" users={users} loading={userListLoading} />
+        <ExploreNews news={news} loading={newsLoading} />
       </RightSection>
     </Section>
   );

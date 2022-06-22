@@ -1,15 +1,19 @@
-import { SET_IS_AUTHENTICATED } from "../types/authentication.types";
-  
+import { SET_AUTHENTICATION } from "../types/authentication.types";
+
 const initialState = {
-    isAuthenticated: false
+  isAuthenticated: false,
+  accessToken: "",
+  refreshToken: "",
 };
-  
+
 export default (state = initialState, action) => {
-    switch (action.type) {
-        case SET_IS_AUTHENTICATED:
-            const { isAuthenticated } = action;
-            return { ...state, isAuthenticated };
-        default:
-            return state;
-    }
+  //   console.log("reducer >>>> " + JSON.stringify(action));
+  switch (action.type) {
+    case SET_AUTHENTICATION:
+      const { isAuthenticated, accessToken, refreshToken } = action.authenticationData;
+      return { ...state, isAuthenticated, accessToken, refreshToken };
+
+    default:
+      return state;
+  }
 };

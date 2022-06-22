@@ -20,7 +20,8 @@ export const SMain = styled.main`
 
   @media screen and (max-width: 450px) {
     display: block;
-    margin-top: 80px;
+    /* margin-top: 80px; */
+    /* margin-top: 8px; */
     width: 100vw;
   }
 `;

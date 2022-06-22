@@ -1,6 +1,6 @@
-import { SET_IS_AUTHENTICATED } from "../types/authentication.types";
+import { SET_AUTHENTICATION } from "../types/authentication.types";
 
-export const setIsAuthenticated = (isAuthenticated) => ({
-    type: SET_IS_AUTHENTICATED,
-    isAuthenticated
-  });
+export const setIsAuthenticated = (authenticationData) => ({
+  type: SET_AUTHENTICATION,
+  authenticationData,
+});

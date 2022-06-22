@@ -8,6 +8,8 @@ export const SSection = styled.div`
   position: sticky;
   top: 0;
   left: 0;
+  z-index: 999999;
+  /* background-color: yellow !important; */
 `;
 
 export const SSidebar = styled.div`
@@ -154,12 +156,12 @@ export const SSidebarContent = styled.div`
   position: relative;
   @keyframes navAnimation {
     0% {
-      background: #fff;
+      /* background: #fff; */
       left: -500px;
       top: 0px;
     }
     100% {
-      background: #fff;
+      /* background: #fff; */
       left: 0px;
       top: 0px;
     }
@@ -171,12 +173,13 @@ export const SSidebarContent = styled.div`
 `;
 
 export const SMobileHeader = styled.div`
-  height: 60px;
+  height: 65px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  background-color: #fff;
-  border-bottom: 1px solid lightgray;
+  background-color: ${({ theme }) => theme.bg2};
+  border-bottom: 1px solid ${({ theme }) => theme.bgAlpha};
   width: 100vw; /// 100vw
   display: none;
+  z-index: 99999;
 
   @media screen and (max-width: 450px) {
     display: ${(props) => (props.isOpen ? "none" : "block")};
@@ -187,13 +190,13 @@ export const SBarIcon = styled(VscThreeBars)`
   font-size: 2rem;
   margin-left: 15px;
   margin-top: 14px;
-  color: black;
+  color: ${({ theme }) => theme.text};
   display: inline-block;
 `;
 
 export const SLogoIconHeader = styled(BsTwitter)`
   font-size: 2rem;
-  color: black;
+  color: ${({ theme }) => theme.text};
   text-align: center;
   margin-top: 7px;
   width: calc(100% - 60px);

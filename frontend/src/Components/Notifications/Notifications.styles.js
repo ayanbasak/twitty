@@ -20,4 +20,8 @@ export const HeadingText = styled.p`
 export const HeadingBar = styled.div`
   height: 50px;
   opacity: 1;
+
+  @media screen and (max-width: 450px) {
+    display: none;
+  }
 `;

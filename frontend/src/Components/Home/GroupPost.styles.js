@@ -25,6 +25,7 @@ export const RightSection = styled.div`
   display: inline-block;
   padding: 10px;
   padding-top: 0px;
+  margin-top: 10px;
   /* width: 100%; */
   width: calc(100% - 70px);
 `;
@@ -104,4 +105,17 @@ export const PostText = styled.p`
   font-weight: lighter;
   line-height: 20px;
   padding-top: 1px;
+  width: 100%;
+
+  @media screen and (min-width: 100px) {
+    width: 550px;
+  }
+`;
+
+export const PostImg = styled.img`
+  height: 200px;
+  width:100%;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 20px;
 `;

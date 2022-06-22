@@ -1,53 +1,88 @@
-
 import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../validation/schemas";
-import openWebService from "../../Services/openWebService";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsAuthenticated } from "../../redux/actions/authentication.action";
+import { setIsAuthenticated, getAuthenticationDetails } from "../../redux/actions/authentication.action";
+import { useNavigate } from "react-router-dom";
+import userService from "../../Services/user.service";
 
 export const useLogin = () => {
-    const { register, formState: { errors }, handleSubmit } = useForm({
-        resolver: yupResolver(loginSchema)
-    });
-    const dispatch = useDispatch();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({ resolver: yupResolver(loginSchema) });
+  const dispatch = useDispatch();
+  const nevigate = useNavigate();
+  const [formErrors, setFormErrors] = useState(errors);
+  const [loading, setLoading] = useState(false);
+  // const authorization = useSelector((state) => state.authorization);
+  // console.log("--- useLogin authorization ----- " + JSON.stringify(authorization));
+  useEffect(() => {
+    setFormErrors(errors);
+  }, [errors]);
 
-    const onSubmit = (data) => {
-        // {"userName":"ayan","userPassword":"88"}
-        let params = new FormData();
-        params.append('user_name', data.userName)
-        params.append('user_password', data.userPassword)
+  const onSubmit = async (data) => {
+    // console.log(">>> useLogin:  " + JSON.stringify(data)); // {"email":"xavier.academy","password":"123"}
+    let params = {
+      email: data.email,
+      password: data.password,
+    };
 
-        // console.log(" ---- login ----");
-        // dispatch(setIsAuthenticated(true));
+    setLoading(true);
+    let { response, error } = await userService.loginUser(params);
+    setLoading(false);
 
-        openWebService.post('login', params)
-        .then(res => {
-            console.log(" ---- login ----");
-            console.log(JSON.stringify(res))
-            // {"user":{"userName":"ee","userFirstName":"eeee","userLastName":"eeeee","userPassword":"$2a$10$O/TGu6qnyu/hFzB7/7EnH.49wi5S8oLkmo9MxYkL1k9ZlPbXySbx.","role":[{"roleName":"User","roleDescription":"Default role for newly created record"}]},"jwtToken":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJlZSIsImV4cCI6MTY0NTEyOTk4MSwiaWF0IjoxNjQ1MTExOTgxfQ.nJIpDrcsj-6pp3jzsAwkrU0z_eMhE-yONgQqpwEtZzjfa6_krnrQDlZfgnyVgIxjcwqqzbfa_r5LlErox7TvUw"}
-        })
-    }
-
-    let inputs = {
-        
+    if (error) {
+      // console.log("---  error response 1000 --- ");
+      let err = {
         email: {
-            label: "Email", 
-            type: "text", 
-            fieldName: "userName", 
-            placeholder: "", 
-            register: register, 
-            errors: errors
+          message: "",
         },
         password: {
-            label: "Password", 
-            type: "password", 
-            fieldName: "userPassword", 
-            placeholder: "", 
-            register: register, 
-            errors: errors
-        }
-    }  
+          message: "",
+        },
+      };
+      if (error.email) {
+        err.email.message = error.email;
+      }
+      if (error.password) {
+        err.password.message = error.password;
+      }
+      setFormErrors(err);
+    } else {
+      // console.log(" ---- registration successfull response 2000 ----");
+      // console.log(response);
+      let authenticationData = {
+        isAuthenticated: true,
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+      };
+      // console.log("---2 useLogin authorization ----- " + JSON.stringify(authorization));
+      dispatch(setIsAuthenticated(authenticationData));
+      nevigate("/");
+    }
+  };
 
-    return [inputs, handleSubmit, onSubmit];
-}
+  let inputs = {
+    email: {
+      label: "Email",
+      type: "text",
+      fieldName: "email",
+      placeholder: "",
+      register: register,
+      errors: formErrors && formErrors.email,
+    },
+    password: {
+      label: "Password",
+      type: "password",
+      fieldName: "password",
+      placeholder: "",
+      register: register,
+      errors: formErrors && formErrors.password,
+    },
+  };
+
+  return [inputs, handleSubmit, onSubmit, loading];
+};

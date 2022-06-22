@@ -11,15 +11,24 @@ export const Section = styled.section`
 
   position: fixed;
   top: 0;
-  height: 75px;
+  height: 0px;
   background-color: ${({ theme }) => theme.bg2};
+  height: 75px;
   opacity: 0.85;
   z-index: 99;
+  @media screen and (max-width: 450px) {
+    display: none;
+  }
 `;
 
 export const HeadingBar = styled.div`
-  height: 75px;
+  height: 65px;
+  background-color: ${({ theme }) => theme.bg2};
   opacity: 1;
+
+  @media screen and (max-width: 450px) {
+    display: none;
+  }
 `;
 
 export const ArrowIcon = styled(FiArrowLeft)`

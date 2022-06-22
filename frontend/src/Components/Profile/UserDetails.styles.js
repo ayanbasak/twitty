@@ -4,6 +4,9 @@ import { CgCalendarDates } from "react-icons/cg";
 export const Section = styled.section`
   /* border-bottom: 1px solid lightgray; */
   margin-top: 75px;
+  @media screen and (max-width: 450px) {
+    margin-top: 0px;
+  }
 `;
 
 export const CoverImage = styled.img`

@@ -31,6 +31,10 @@ export const HeadingText = styled.p`
 export const HeadingBar = styled.div`
   height: 50px;
   opacity: 1;
+
+  @media screen and (max-width: 450px) {
+    display: none;
+  }
 `;
 
 export const PostSection = styled.div`
@@ -169,11 +173,21 @@ export const Divider = styled.hr`
 
 export const BottomSection = styled.div``;
 
+export const EmojiesSection = styled.div`
+  border-radius: 10px;
+  border: 1px solid lightgray;
+  padding: 7px;
+  margin-top: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+`;
+
 export const PictureIcon = styled(AiOutlinePicture)`
   font-size: 22px;
   margin: 5px;
   margin-top: 15px;
   color: ${({ theme }) => theme.primary};
+  cursor: pointer;
   /* color: gray; */
 `;
 
@@ -183,6 +197,7 @@ export const VideoIcon = styled(AiOutlineVideoCamera)`
   margin-top: 15px;
   margin-left: 15px;
   color: ${({ theme }) => theme.primary};
+  cursor: pointer;
   /* color: gray; */
 `;
 
@@ -192,6 +207,7 @@ export const SmileIcon = styled(BsEmojiSmile)`
   margin-top: 15px;
   margin-left: 15px;
   color: ${({ theme }) => theme.primary};
+  cursor: pointer;
   /* color: gray; */
 `;
 
@@ -201,6 +217,7 @@ export const LocationIcon = styled(TiLocationOutline)`
   margin-top: 15px;
   margin-left: 15px;
   color: ${({ theme }) => theme.primary};
+  cursor: pointer;
   /* color: gray; */
 `;
 
@@ -222,8 +239,12 @@ export const RoundedButton = styled.button`
 
   &:hover {
     transition: all 0.3s ease-out;
+    /* background-color: ${(props) => (props.filled ? "#0250AD" : "rgb(53, 92, 140, 0.3)")};
+    border: 2px solid #0250ad; */
+  }
+
+  &:disabled{
     background-color: ${(props) => (props.filled ? "#0250AD" : "rgb(53, 92, 140, 0.3)")};
     border: 2px solid #0250ad;
-    /* color: ${(props) => (props.filled ? "#1D9BF0" : "#fff")}; */
   }
 `;
