@@ -1,5 +1,5 @@
 import React from "react";
-import { Section, Text } from "./TermsConditions.styles";
+import { Section, Text } from "../../styles/explore/TermsConditions.styles";
 
 export const TermsConditions = () => {
   return (

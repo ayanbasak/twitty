@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   HeadingText,
   PostSection,
@@ -25,50 +25,75 @@ import {
   PictureIcon,
   RoundedButton,
   FileUploadSection,
-  CloseIcon,
+  CloseIcon, CloseIcon2,
   HeadingBar,
-} from "./SharePost.styles";
-import profilePicture from "./profile_pic.JPG";
-import statusImg from "./statusImage.jpg";
+  EmojiesSection, PostSuccess
+} from "../../styles/home/SharePost.styles";
+import blankProfilePicture from "../../images/profile/blank-profile.png";
+import { ImgInput } from "../../styles/sub-component/profile/ImageInput.styles";
+import { useSharePost } from "../../hooks/useSharePost";
+import { Loader } from "../sub-component/loader/Loader";
 
-const SharePost = () => {
+const SharePost = ({updatePosts}) => {
+  const [text, setText, img, setImg, showEmojies, setShowEmojies, emojies, sendPost, loading, userPic, postSuccess, setPostSucess] = useSharePost({updatePosts});
+  
   return (
     <Section>
       <HeadingBar>
-        <HeadingText>Home</HeadingText>
+        <HeadingText> Home </HeadingText>
       </HeadingBar>
       <PostSection>
         <LeftSection>
-          <ProfilePic src={profilePicture} alt="profile picture" />
+          <ProfilePic src={!!userPic ? userPic : blankProfilePicture} alt="profile picture" />
         </LeftSection>
         <RightSection>
-          <InputBox placeholder="What's happening?" />
-          <FileUploadSection>
-            <ImgTag src={statusImg} alt="image Tag" />
-            <CloseIcon />
-          </FileUploadSection>
-
-          <ShareTopSection>
+          <InputBox placeholder="What's happening?" type="text" value={text} onChange={(e) => setText(e.target.value)} />
+          {!!img && (
+            <FileUploadSection>
+              <ImgTag src={URL.createObjectURL(img)} alt="image Tag" />
+              <CloseIcon onClick={() => setImg(null)} />
+            </FileUploadSection>
+          )}
+          {/*  <ShareTopSection>
             <ShareTagSection>
               <UserIcon /> <ShareText>Tag people</ShareText>
             </ShareTagSection>
             <ShareDescriptionSection>
               <DescriptionIcon /> <ShareText>Add description</ShareText>
             </ShareDescriptionSection>
-          </ShareTopSection>
+          </ShareTopSection> */}
           <ShareBottomSection>
             <GlobeIcon /> <ShareToText>Everyone can reply</ShareToText>
           </ShareBottomSection>
           <Divider />
           <BottomSection>
-            <PictureIcon />
-            <VideoIcon />
-            <SmileIcon />
+            <label htmlFor="file-input-3">
+              <PictureIcon />
+            </label>
+            <ImgInput id="file-input-3" type="file" accept="image/*" onChange={(e) => setImg(e.target.files[0])} />
+            <SmileIcon onClick={() => setShowEmojies(!showEmojies)} />
             <LocationIcon />
-            <RoundedButton filled> Tweet </RoundedButton>
+            <RoundedButton filled onClick={sendPost} disabled={!text || loading}>
+              {!!loading ? <Loader size="20px" color="white"/> : "Tweet"}
+            </RoundedButton>
           </BottomSection>
+          {showEmojies && (
+            <EmojiesSection>
+              {emojies.map((emoji, key) => (
+                <span key={key} onClick={() => setText(text + emoji)}>
+                  {emoji}
+                </span>
+              ))}
+            </EmojiesSection>
+          )}
         </RightSection>
       </PostSection>
+      {postSuccess && (
+        <PostSuccess> 
+          Your Post Uploaded Successfully
+          <CloseIcon2 onClick={() => setPostSucess(false)}/>
+        </PostSuccess>
+      )}      
     </Section>
   );
 };

@@ -1,4 +1,6 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+import { Loader } from "../sub-component/loader/Loader";
 import {
   NewsImage,
   NewsContent,
@@ -10,16 +12,34 @@ import {
   Content,
   ImageSection,
   NewsFooter,
-} from "./ExploreNews.styles";
-import profilePicture from "./profile_pic.JPG";
-import statusImg from "./statusImage.jpg";
+} from "../../styles/home/ExploreNews.styles";
 
-const ExploreNews = () => {
+const ExploreNews = ({news, loading}) => {
   return (
     <Section>
       <SectionHeader>What’s happening</SectionHeader>
 
-      <NewsSection>
+      {loading ? <Loader size="30px"/> : news.map((_news,i) => (
+        <NewsSection key={i}>
+        <Content>
+          <NewsHeader>{_news.tweetFrom && _news.tweetFrom}  {_news.type && "  ·  " + _news.type}</NewsHeader>
+          <NewsContent>
+            {_news.heading && _news.heading.substring(0, 50)+"..."}
+          </NewsContent>
+          <NewsContent>
+            {_news.description && _news.description.substring(0, 50)+"..."}
+          </NewsContent>
+          {_news.tweets && <NewsFooter>{_news.tweets} Tweets</NewsFooter>} 
+        </Content>
+        {_news.newsImg && (
+          <ImageSection>
+            <NewsImage src={_news.newsImg} />
+          </ImageSection>
+        )}        
+      </NewsSection>
+      ))}
+     {/*
+     <NewsSection>
         <Content>
           <NewsHeader>War in Ukraine · LIVE</NewsHeader>
           <NewsContent>
@@ -39,8 +59,10 @@ const ExploreNews = () => {
           <NewsFooter>4,542 Tweets</NewsFooter>
         </Content>
       </NewsSection>
-
-      <SectionBottom>See more</SectionBottom>
+    */}
+      <NavLink to="explore">
+        <SectionBottom>See more</SectionBottom>
+      </NavLink>
     </Section>
   );
 };

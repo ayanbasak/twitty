@@ -1,0 +1,27 @@
+version: "3"
+services:
+  twitty-backend:
+    container_name: twitty-backend
+    image: twitty-backend-app
+#    restart: always
+    build: .
+    ports:
+      - 9090:9091
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+    depends_on:
+      - mysqldb
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    volumes:
+      - /home/ubuntu/db:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: twitty
+      MYSQL_ROOT_PASSWORD: root

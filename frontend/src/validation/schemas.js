@@ -1,16 +1,18 @@
-
 import * as yup from "yup";
 
-export const loginSchema = yup.object({
-    userName: yup.string().required('Please Provide Your Email'),
-    userPassword: yup.string().required('Please Provide a Password'),
+export const loginSchema = yup
+  .object({
+    email: yup.string().required("Please Provide Your Email"),
+    password: yup.string().required("Please Provide a Password"),
     // age: yup.number().positive().integer().required(),
-}).required();
+  })
+  .required();
 
-
-export const registrationSchema = yup.object({
-    userName: yup.string().required('Please Provide Your Email'),
-    userPassword: yup.string().required('Please Provide a Password'),
-    userFirstName: yup.string().required('Please Enter Your First Name'),
-    userLastName: yup.string().required('Please Enter Your Last Name'),
-}).required();
+export const registrationSchema = yup
+  .object({
+    email: yup.string().required("Please Provide Your Email"),
+    password: yup.string().required("Please Provide a Password"),
+    confirmPassword: yup.string().required("Please reenter Your Password"),
+    username: yup.string().required("Please Enter Your Name"),
+  })
+  .required();

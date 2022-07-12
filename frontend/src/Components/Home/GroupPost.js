@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import {
   PostSection,
   LeftSection,
@@ -14,40 +15,39 @@ import {
   UserId,
   PostTime,
   PostDetailsSection,
-  PostText,
-} from "./GroupPost.styles";
-import PostActivities from "./PostActivities";
-import profilePicture from "./profile_pic.JPG";
-import statusImg from "./statusImage.jpg";
+  PostText,PostImg
+} from "../../styles/home/GroupPost.styles";
+import PostActivities from "../../styles/home/PostActivities";
+import blankProfilePicture from "../../images/profile/blank-profile.png";
 
-const GroupPost = () => {
+const GroupPost = ({post}) => {
   return (
     <Section>
       <PostSection>
-        <TopSection>
+       {/*
+       <TopSection>
           <CommentHeaderIcon />
-          <GroupName>Computer programming . </GroupName>
+          <GroupName>Computer programming 101. </GroupName>
           <SeeMoreLink>See more</SeeMoreLink>
-        </TopSection>
-
+        </TopSection>  
+      */}
+      
         <LeftSection>
-          <ProfilePic src={profilePicture} alt="profile picture" />
-        </LeftSection>
+          <ProfilePic src={!!post.userProfilePicture ? post.userProfilePicture : blankProfilePicture} alt="profile picture" />
+        </LeftSection>    
         <RightSection>
           <UserDetailsSection>
-            <UserName>Ayan Basak</UserName>
-            <UserId>@ayan .</UserId>
-            <PostTime>10h</PostTime>
+            <UserName>{post.username}</UserName>
+            <UserId>{post.userTag} . </UserId>
+            <PostTime>{post.createdAt}</PostTime>
           </UserDetailsSection>
-          <PostDetailsSection>
-            <PostText>
-              Use GroupDocs Signature for .NET API to build applications in
-              .NET-based technologies, that allow you to sign digital business
-              documents such as PDF, Word, Excel, PowerPoint documents, images,
-              and other industry-standard file formats.
-            </PostText>
-          </PostDetailsSection>
-          <PostActivities />
+          <NavLink to={`comment/${post.postId}`}>
+            <PostDetailsSection>
+              <PostText>{post.postText}</PostText>
+              {!!post.postImage && <PostImg src={post.postImage} alt="post image"/>}
+            </PostDetailsSection>
+          </NavLink>
+          <PostActivities noOfComments={post.noOfComments}/>
         </RightSection>
       </PostSection>
     </Section>

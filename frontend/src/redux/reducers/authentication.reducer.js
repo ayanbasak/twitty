@@ -1,15 +1,29 @@
-import { SET_IS_AUTHENTICATED } from "../types/authentication.types";
-  
+import { SET_AUTHENTICATION, UPDATE_PROFILEPICTURE_AND_USERNAME } from "../types/authentication.types";
+
 const initialState = {
-    isAuthenticated: false
+  isAuthenticated: false,
+  userProfilePic: "",
+  userName: "",
+  userTag: "",
+  userEmail: "",
 };
-  
+
 export default (state = initialState, action) => {
-    switch (action.type) {
-        case SET_IS_AUTHENTICATED:
-            const { isAuthenticated } = action;
-            return { ...state, isAuthenticated };
-        default:
-            return state;
-    }
+  //   console.log("reducer >>>> " + JSON.stringify(action));
+  switch (action.type) {
+    case SET_AUTHENTICATION:
+      const { isAuthenticated, userProfilePic, userName, userTag, userEmail} = action.authenticationData;
+      return { isAuthenticated, userProfilePic, userName, userTag, userEmail };
+
+    case UPDATE_PROFILEPICTURE_AND_USERNAME:
+      const { profilePic, name } = action.data;
+      if(!!profilePic){
+        return { ...state, userProfilePic: profilePic, userName: name};
+      }else{
+        return { ...state, userName: name};
+      }     
+
+    default:
+      return state;
+  }
 };

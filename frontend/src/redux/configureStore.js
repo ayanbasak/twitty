@@ -1,21 +1,22 @@
-import { combineReducers, createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
-import userReducer from "./reducers/user.reducer";
-import AuthenticationReducer from "./reducers/authentication.reducer";
-import { watcherSaga } from "./sagas/rootSaga";
+// import { watcherSaga } from "./sagas/rootSaga";
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'
+import rootReducer from "./reducers/rootReducer";
 
-const reducer = combineReducers({
-//   counter: counterReducer,
-  user: userReducer,
-  isAuthenticated: AuthenticationReducer
-});
+const persistConfig = {
+  key: 'twitty-store',
+  storage
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const sagaMiddleware = createSagaMiddleware();
 
-const middleware = [sagaMiddleware];
+const store = createStore(persistedReducer, {}, applyMiddleware(sagaMiddleware));
 
-const store = createStore(reducer, {}, applyMiddleware(...middleware));
+// sagaMiddleware.run(watcherSaga);
 
-sagaMiddleware.run(watcherSaga);
-
+export const persistor = persistStore(store)
 export default store;
